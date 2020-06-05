@@ -31,8 +31,8 @@ public class ActivityControlling extends Activity {
     private Button mBtnDisconnect;
     private BluetoothDevice mDevice;
 
-    final static String on="2";
-    final static String off="1";
+    final static String on="1";
+    final static String off="0";
 
 
     private ProgressDialog progressDialog;

@@ -11,25 +11,26 @@
         android:id="@+id/on"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:text="Light On"
+        android:layout_marginLeft="50dp"
         android:layout_marginTop="100dp"
-        android:layout_marginLeft="50dp"/>
+        android:text="Light On" />
 
     <Button
         android:id="@+id/off"
         android:layout_width="150dp"
         android:layout_height="100dp"
-        android:text="Light Off"
+        android:layout_marginLeft="207dp"
         android:layout_marginTop="100dp"
-        android:layout_marginLeft="207dp"/>
+        android:text="Light Off" />
 
     <ImageView
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
+        android:layout_centerHorizontal="true"
         android:layout_marginLeft="30dp"
-        android:src="@drawable/motionscanlogo"/>
+        android:layout_marginTop="270dp"
+        android:src="@drawable/motionscanlogo" />
 </RelativeLayout>
 
 

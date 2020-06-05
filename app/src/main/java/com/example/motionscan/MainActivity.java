@@ -47,12 +47,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
         search = (Button) findViewById(R.id.search);
         connect = (Button) findViewById(R.id.connect);
         listView = (ListView) findViewById(R.id.listView);
-
         if (savedInstanceState != null) {
             ArrayList<BluetoothDevice> list = savedInstanceState.getParcelableArrayList(DEVICE_LIST);
             if (list != null) {
@@ -66,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 initList(new ArrayList<BluetoothDevice>());
             }
-
         } else {
             initList(new ArrayList<BluetoothDevice>());
         }
+
         search.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -99,7 +96,31 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
 
+    private class SearchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
+
+        @Override
+        protected List<BluetoothDevice> doInBackground(Void... params) {
+            Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
+            List<BluetoothDevice> listDevices = new ArrayList<BluetoothDevice>();
+            for (BluetoothDevice device : pairedDevices) {
+                listDevices.add(device);
+            }
+            return listDevices;
+
+        }
+
+        @Override
+        protected void onPostExecute(List<BluetoothDevice> listDevices) {
+            super.onPostExecute(listDevices);
+            if (listDevices.size() > 0) {
+                MyAdapter adapter = (MyAdapter) listView.getAdapter();
+                adapter.replaceItems(listDevices);
+            } else {
+                msg("No paired devices have been found, please pair your Bluetooth device and try again");
+            }
+        }
     }
 
     protected void onPause() {
@@ -136,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
                 if (orientation.equals("Landscape")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
                 } else if (orientation.equals("Portrait")) {
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+                   setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
                 } else if (orientation.equals("Auto")) {
                     setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_FULL_SENSOR);
                 }
@@ -164,30 +185,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private class SearchDevices extends AsyncTask<Void, Void, List<BluetoothDevice>> {
-
-        @Override
-        protected List<BluetoothDevice> doInBackground(Void... params) {
-            Set<BluetoothDevice> pairedDevices = mBTAdapter.getBondedDevices();
-            List<BluetoothDevice> listDevices = new ArrayList<BluetoothDevice>();
-            for (BluetoothDevice device : pairedDevices) {
-                listDevices.add(device);
-            }
-            return listDevices;
-
-        }
-
-        @Override
-        protected void onPostExecute(List<BluetoothDevice> listDevices) {
-            super.onPostExecute(listDevices);
-            if (listDevices.size() > 0) {
-                MyAdapter adapter = (MyAdapter) listView.getAdapter();
-                adapter.replaceItems(listDevices);
-            } else {
-                msg("No paired devices have been found, please pair your Bluetooth device and try again");
-            }
-        }
-    }
 
     private class MyAdapter extends ArrayAdapter<BluetoothDevice> {
         private int selectedIndex;
